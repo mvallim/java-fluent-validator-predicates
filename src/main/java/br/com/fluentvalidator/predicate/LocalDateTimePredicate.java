@@ -1,6 +1,10 @@
 package br.com.fluentvalidator.predicate;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -10,6 +14,13 @@ import static br.com.fluentvalidator.predicate.LogicalPredicate.not;
 import static br.com.fluentvalidator.predicate.ObjectPredicate.nullValue;
 
 public final class LocalDateTimePredicate {
+
+  private static final Set<DayOfWeek> WEEKEND_DAYS = new HashSet<>();
+
+  static {
+    WEEKEND_DAYS.add(DayOfWeek.SATURDAY);
+    WEEKEND_DAYS.add(DayOfWeek.SUNDAY);
+  }
 
   /**
    *
@@ -488,6 +499,52 @@ public final class LocalDateTimePredicate {
         .and(not(nullValue(min)))
         .and(not(nullValue(max)))
         .and(obj -> localDateTimeBetweenOrEqual(source, min.apply(obj), max.apply(obj)).test(obj));
+  }
+
+
+  /**
+   *
+   * @param <T>
+   * @return
+   */
+  public static <T extends LocalDateTime> Predicate<T> localDateTimeIsWeekend() {
+    return PredicateBuilder.<T>from(not(nullValue()))
+        .and(obj -> WEEKEND_DAYS.contains(obj.getDayOfWeek()));
+  }
+
+  /**
+   *
+   * @param source
+   * @param <T>
+   * @return
+   */
+  public static <T> Predicate<T> localDateTimeIsWeekend(final Function<T, LocalDateTime> source) {
+    return PredicateBuilder.<T>from(not(nullValue()))
+        .and(not(nullValue(source)))
+        .and(obj -> localDateTimeIsWeekend().test(source.apply(obj)));
+  }
+
+
+  /**
+   *
+   * @param <T>
+   * @return
+   */
+  public static <T extends LocalDateTime> Predicate<T> localDateTimeIsWorkday() {
+    return PredicateBuilder.<T>from(not(nullValue()))
+        .and(not(localDateTimeIsWeekend()));
+  }
+
+  /**
+   *
+   * @param source
+   * @param <T>
+   * @return
+   */
+  public static <T> Predicate<T> localDateTimeIsWorkday(final Function<T, LocalDateTime> source) {
+    return PredicateBuilder.<T>from(not(nullValue()))
+        .and(not(nullValue(source)))
+        .and(obj -> localDateTimeIsWorkday().test(source.apply(obj)));
   }
 
 

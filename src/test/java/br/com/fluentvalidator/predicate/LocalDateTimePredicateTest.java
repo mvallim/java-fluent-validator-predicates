@@ -1,26 +1,9 @@
 package br.com.fluentvalidator.predicate;
 
-import static br.com.fluentvalidator.predicate.LocalDateTimePredicate.localDateTimeAfter;
-import static br.com.fluentvalidator.predicate.LocalDateTimePredicate.localDateTimeAfterNow;
-import static br.com.fluentvalidator.predicate.LocalDateTimePredicate.localDateTimeAfterOrEqual;
-import static br.com.fluentvalidator.predicate.LocalDateTimePredicate.localDateTimeAfterOrEqualToday;
-import static br.com.fluentvalidator.predicate.LocalDateTimePredicate.localDateTimeAfterToday;
-import static br.com.fluentvalidator.predicate.LocalDateTimePredicate.localDateTimeBefore;
-import static br.com.fluentvalidator.predicate.LocalDateTimePredicate.localDateTimeBeforeNow;
-import static br.com.fluentvalidator.predicate.LocalDateTimePredicate.localDateTimeBeforeOrEqual;
-import static br.com.fluentvalidator.predicate.LocalDateTimePredicate.localDateTimeBeforeOrEqualToday;
-import static br.com.fluentvalidator.predicate.LocalDateTimePredicate.localDateTimeBeforeToday;
-import static br.com.fluentvalidator.predicate.LocalDateTimePredicate.localDateTimeBetween;
-import static br.com.fluentvalidator.predicate.LocalDateTimePredicate.localDateTimeBetweenOrEqual;
-import static br.com.fluentvalidator.predicate.LocalDateTimePredicate.localDateTimeEqualTo;
-import static br.com.fluentvalidator.predicate.LocalDateTimePredicate.localDateTimeIsToday;
-import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
@@ -28,7 +11,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
-import org.junit.Test;
+import static br.com.fluentvalidator.predicate.LocalDateTimePredicate.*;
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class LocalDateTimePredicateTest {
 
@@ -57,7 +45,7 @@ public class LocalDateTimePredicateTest {
 
   // endregion
 
-  // region localDateAfterOrEqualToday
+  // region localDateTimeAfterOrEqualToday
 
   @Test
   public void testLocalDateTimeAfterOrEqualToday() {
@@ -107,7 +95,7 @@ public class LocalDateTimePredicateTest {
 
   // endregion
 
-  // region localDateBeforeOrEqualToday
+  // region localDateTimeBeforeOrEqualToday
 
   @Test
   public void testLocalDateTimeBeforeOrEqualToday() {
@@ -132,7 +120,7 @@ public class LocalDateTimePredicateTest {
 
   // endregion
 
-  // region localDateIsEqualToday
+  // region localDateTimeIsEqualToday
 
   @Test
   public void testLocalDateTimeIsToday() {
@@ -157,7 +145,7 @@ public class LocalDateTimePredicateTest {
 
   // endregion
 
-  // region localDateIsEqualToday
+  // region localDateTimeIsEqualToday
 
   @Test
   public void testLocalDateTimeEqualTo() {
@@ -240,7 +228,7 @@ public class LocalDateTimePredicateTest {
 
   // endregion
 
-  // region localDateAfter
+  // region localDateTimeAfter
 
   @Test
   public void testLocalDateTimeAfter() {
@@ -300,7 +288,7 @@ public class LocalDateTimePredicateTest {
 
   // endregion
 
-  // region localDateBefore
+  // region localDateTimeBefore
 
   @Test
   public void testLocalDateTimeBefore() {
@@ -360,7 +348,7 @@ public class LocalDateTimePredicateTest {
 
   // endregion
 
-  // region localDateBetween
+  // region localDateTimeBetween
 
   @Test
   public void testLocalDateTimeBetween() {
@@ -448,7 +436,7 @@ public class LocalDateTimePredicateTest {
 
   // endregion
 
-  // region localDateBetweenOrEqual
+  // region localDateTimeBetweenOrEqual
 
   @Test
   public void testLocalDateTimeBetweenOrEqual() {
@@ -532,6 +520,86 @@ public class LocalDateTimePredicateTest {
     assertFalse(localDateTimeBetweenOrEqual(ObjectFromLocalDateTime::getSource, (Function<ObjectFromLocalDateTime, LocalDateTime>) null, ObjectFromLocalDateTime::getMax).test(null));
     assertFalse(localDateTimeBetweenOrEqual(null, (Function<ObjectFromLocalDateTime, LocalDateTime>) null, (Function<ObjectFromLocalDateTime, LocalDateTime>) null).test(new ObjectFromLocalDateTime(now, now, now)));
 
+  }
+
+  // endregion
+
+  // region localDateTimeIsWeekend
+
+  @Test
+  public void testLocalDateTimeIsWeekend() {
+    final LocalDateTime sunday = LocalDateTime.of(2021, Month.APRIL, 11, 20, 9, 10);
+    final LocalDateTime monday = LocalDateTime.of(2021, Month.APRIL, 12, 20, 9, 10);
+    final LocalDateTime tuesday = LocalDateTime.of(2021, Month.APRIL, 13, 20, 9, 10);
+    final LocalDateTime wednesday = LocalDateTime.of(2021, Month.APRIL, 14, 20, 9, 10);
+    final LocalDateTime thursday = LocalDateTime.of(2021, Month.APRIL, 15, 20, 9, 10);
+    final LocalDateTime friday = LocalDateTime.of(2021, Month.APRIL, 16, 20, 9, 10);
+    final LocalDateTime saturday = LocalDateTime.of(2021, Month.APRIL, 17, 20, 9, 10);
+
+    assertTrue(localDateTimeIsWeekend().test(sunday));
+    assertFalse(localDateTimeIsWeekend().test(monday));
+    assertFalse(localDateTimeIsWeekend().test(tuesday));
+    assertFalse(localDateTimeIsWeekend().test(wednesday));
+    assertFalse(localDateTimeIsWeekend().test(thursday));
+    assertFalse(localDateTimeIsWeekend().test(friday));
+    assertTrue(localDateTimeIsWeekend().test(saturday));
+
+    assertTrue(localDateTimeIsWeekend(ObjectFrom<LocalDateTime>::getSource).test(new ObjectFrom<>(sunday, null)));
+    assertFalse(localDateTimeIsWeekend(ObjectFrom<LocalDateTime>::getSource).test(new ObjectFrom<>(monday, null)));
+    assertFalse(localDateTimeIsWeekend(ObjectFrom<LocalDateTime>::getSource).test(new ObjectFrom<>(tuesday, null)));
+    assertFalse(localDateTimeIsWeekend(ObjectFrom<LocalDateTime>::getSource).test(new ObjectFrom<>(wednesday, null)));
+    assertFalse(localDateTimeIsWeekend(ObjectFrom<LocalDateTime>::getSource).test(new ObjectFrom<>(thursday, null)));
+    assertFalse(localDateTimeIsWeekend(ObjectFrom<LocalDateTime>::getSource).test(new ObjectFrom<>(friday, null)));
+    assertTrue(localDateTimeIsWeekend(ObjectFrom<LocalDateTime>::getSource).test(new ObjectFrom<>(saturday, null)));
+  }
+
+  @Test
+  public void testNullObjectLocalDateTimeIsWeekend() {
+    assertFalse(localDateTimeIsWeekend().test(null));
+
+    assertFalse(localDateTimeIsWeekend(ObjectFrom<LocalDateTime>::getSource).test(new ObjectFrom<>(null, null)));
+    assertFalse(localDateTimeIsWeekend(ObjectFrom<LocalDateTime>::getSource).test(null));
+    assertFalse(localDateTimeIsWeekend(null).test(new ObjectFrom<>(null, null)));
+  }
+
+  // endregion
+
+  // region localDateTimeIsWeekend
+
+  @Test
+  public void testLocalDateTimeIsWorkday() {
+    final LocalDateTime sunday = LocalDateTime.of(2021, Month.APRIL, 11, 20, 9, 10);
+    final LocalDateTime monday = LocalDateTime.of(2021, Month.APRIL, 12, 20, 9, 10);
+    final LocalDateTime tuesday = LocalDateTime.of(2021, Month.APRIL, 13, 20, 9, 10);
+    final LocalDateTime wednesday = LocalDateTime.of(2021, Month.APRIL, 14, 20, 9, 10);
+    final LocalDateTime thursday = LocalDateTime.of(2021, Month.APRIL, 15, 20, 9, 10);
+    final LocalDateTime friday = LocalDateTime.of(2021, Month.APRIL, 16, 20, 9, 10);
+    final LocalDateTime saturday = LocalDateTime.of(2021, Month.APRIL, 17, 20, 9, 10);
+
+    assertFalse(localDateTimeIsWorkday().test(sunday));
+    assertTrue(localDateTimeIsWorkday().test(monday));
+    assertTrue(localDateTimeIsWorkday().test(tuesday));
+    assertTrue(localDateTimeIsWorkday().test(wednesday));
+    assertTrue(localDateTimeIsWorkday().test(thursday));
+    assertTrue(localDateTimeIsWorkday().test(friday));
+    assertFalse(localDateTimeIsWorkday().test(saturday));
+
+    assertFalse(localDateTimeIsWorkday(ObjectFrom<LocalDateTime>::getSource).test(new ObjectFrom<>(sunday, null)));
+    assertTrue(localDateTimeIsWorkday(ObjectFrom<LocalDateTime>::getSource).test(new ObjectFrom<>(monday, null)));
+    assertTrue(localDateTimeIsWorkday(ObjectFrom<LocalDateTime>::getSource).test(new ObjectFrom<>(tuesday, null)));
+    assertTrue(localDateTimeIsWorkday(ObjectFrom<LocalDateTime>::getSource).test(new ObjectFrom<>(wednesday, null)));
+    assertTrue(localDateTimeIsWorkday(ObjectFrom<LocalDateTime>::getSource).test(new ObjectFrom<>(thursday, null)));
+    assertTrue(localDateTimeIsWorkday(ObjectFrom<LocalDateTime>::getSource).test(new ObjectFrom<>(friday, null)));
+    assertFalse(localDateTimeIsWorkday(ObjectFrom<LocalDateTime>::getSource).test(new ObjectFrom<>(saturday, null)));
+  }
+
+  @Test
+  public void testNullObjectLocalDateTimeIsWorkday() {
+    assertFalse(localDateTimeIsWeekend().test(null));
+
+    assertFalse(localDateTimeIsWeekend(ObjectFrom<LocalDateTime>::getSource).test(new ObjectFrom<>(null, null)));
+    assertFalse(localDateTimeIsWeekend(ObjectFrom<LocalDateTime>::getSource).test(null));
+    assertFalse(localDateTimeIsWeekend(null).test(new ObjectFrom<>(null, null)));
   }
 
   // endregion

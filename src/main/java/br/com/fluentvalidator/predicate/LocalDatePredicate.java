@@ -1,6 +1,9 @@
 package br.com.fluentvalidator.predicate;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -9,6 +12,13 @@ import static br.com.fluentvalidator.predicate.LogicalPredicate.not;
 import static br.com.fluentvalidator.predicate.ObjectPredicate.nullValue;
 
 public final class LocalDatePredicate {
+
+  private static final Set<DayOfWeek> WEEKEND_DAYS = new HashSet<>();
+
+  static {
+    WEEKEND_DAYS.add(DayOfWeek.SATURDAY);
+    WEEKEND_DAYS.add(DayOfWeek.SUNDAY);
+  }
 
   /**
    *
@@ -36,7 +46,6 @@ public final class LocalDatePredicate {
         .and(obj -> localDateAfter(target).test(source.apply(obj)));
   }
 
-
   /**
    *
    * @param target
@@ -47,6 +56,7 @@ public final class LocalDatePredicate {
         .and(obj -> not(nullValue()).test(target))
         .and(obj -> obj.isAfter(target));
   }
+
 
   /**
    *
@@ -60,7 +70,6 @@ public final class LocalDatePredicate {
         .and(not(nullValue(target)))
         .and(obj -> localDateAfterOrEqual(source, target.apply(obj)).test(obj));
   }
-
 
   /**
    *
@@ -158,7 +167,6 @@ public final class LocalDatePredicate {
         .and(obj -> localDateBefore(target).test(source.apply(obj)));
   }
 
-
   /**
    *
    * @param target
@@ -169,6 +177,7 @@ public final class LocalDatePredicate {
         .and(obj -> not(nullValue()).test(target))
         .and(obj -> obj.isBefore(target));
   }
+
 
   /**
    *
@@ -196,7 +205,6 @@ public final class LocalDatePredicate {
         .and(obj -> localDateBeforeOrEqual(target).test(source.apply(obj)));
   }
 
-
   /**
    *
    * @param target
@@ -208,6 +216,7 @@ public final class LocalDatePredicate {
         .and(obj -> not(nullValue()).test(target))
         .and(is(localDateBefore(target)).or(localDateEqualTo(target)));
   }
+
 
   /**
    *
@@ -252,6 +261,7 @@ public final class LocalDatePredicate {
         .and(obj -> localDateBeforeToday().test(source.apply(obj)));
   }
 
+
   /**
    *
    * @param source
@@ -266,7 +276,6 @@ public final class LocalDatePredicate {
         .and(not(nullValue(max)))
         .and(obj -> localDateBetween(source, min.apply(obj), max.apply(obj)).test(obj));
   }
-
 
   /**
    *
@@ -310,7 +319,6 @@ public final class LocalDatePredicate {
         .and(obj -> localDateBetween(min, max).test(source.apply(obj)));
   }
 
-
   /**
    *
    * @param min
@@ -322,6 +330,7 @@ public final class LocalDatePredicate {
     return PredicateBuilder.<T>from(not(nullValue()))
         .and(localDateAfter(min).and(localDateBefore(max)));
   }
+
 
   /**
    *
@@ -380,7 +389,6 @@ public final class LocalDatePredicate {
         .and(obj -> localDateBetweenOrEqual(min, max).test(source.apply(obj)));
   }
 
-
   /**
    *
    * @param min
@@ -392,6 +400,7 @@ public final class LocalDatePredicate {
     return PredicateBuilder.<T>from(not(nullValue()))
         .and(localDateAfterOrEqual(min).and(localDateBeforeOrEqual(max)));
   }
+
 
   /**
    *
@@ -417,6 +426,7 @@ public final class LocalDatePredicate {
         .and(obj -> localDate.isEqual(obj));
   }
 
+
   /**
    *
    * @param <T>
@@ -438,6 +448,53 @@ public final class LocalDatePredicate {
         .and(not(nullValue(source)))
         .and(obj -> localDateIsToday().test(source.apply(obj)));
   }
+
+
+  /**
+   *
+   * @param <T>
+   * @return
+   */
+  public static <T extends LocalDate> Predicate<T> localDateIsWeekend() {
+    return PredicateBuilder.<T>from(not(nullValue()))
+        .and(obj -> WEEKEND_DAYS.contains(obj.getDayOfWeek()));
+  }
+
+  /**
+   *
+   * @param source
+   * @param <T>
+   * @return
+   */
+  public static <T> Predicate<T> localDateIsWeekend(final Function<T, LocalDate> source) {
+    return PredicateBuilder.<T>from(not(nullValue()))
+        .and(not(nullValue(source)))
+        .and(obj -> localDateIsWeekend().test(source.apply(obj)));
+  }
+
+
+  /**
+   *
+   * @param <T>
+   * @return
+   */
+  public static <T extends LocalDate> Predicate<T> localDateIsWorkday() {
+    return PredicateBuilder.<T>from(not(nullValue()))
+        .and(not(localDateIsWeekend()));
+  }
+
+  /**
+   *
+   * @param source
+   * @param <T>
+   * @return
+   */
+  public static <T> Predicate<T> localDateIsWorkday(final Function<T, LocalDate> source) {
+    return PredicateBuilder.<T>from(not(nullValue()))
+        .and(not(nullValue(source)))
+        .and(obj -> localDateIsWorkday().test(source.apply(obj)));
+  }
+
 
   private LocalDatePredicate() {
     super();
