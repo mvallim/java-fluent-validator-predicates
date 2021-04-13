@@ -798,6 +798,22 @@ localDateBetweenOrEqual(final Function<T, LocalDate> source, final LocalDate min
 localDateBetweenOrEqual(final Function<T, LocalDate> source, final Function<T, LocalDate> min, final Function<T, LocalDate> max)
 ```
 
+```java
+localDateIsWeekend()
+```
+
+```java
+localDateIsWeekend(final Function<T, LocalDate> source)
+```
+
+```java
+localDateIsWorkday()
+```
+
+```java
+localDateIsWorkday(final Function<T, LocalDate> source)
+```
+
 ## 6.10 LocalDateTime
 
 ```java
@@ -950,6 +966,22 @@ localDateTimeBetweenOrEqual(final Function<T, LocalDateTime> source, final Local
 
 ```java
 localDateTimeBetweenOrEqual(final Function<T, LocalDateTime> source, final Function<T, LocalDateTime> min, final Function<T, LocalDateTime> max)
+```
+
+```java
+localDateTimeIsWeekend()
+```
+
+```java
+localDateTimeIsWeekend(final Function<T, LocalDateTime> source)
+```
+
+```java
+localDateTimeIsWorkday()
+```
+
+```java
+localDateTimeIsWorkday(final Function<T, LocalDateTime> source)
 ```
 
 ## 6.11 LocalTime
