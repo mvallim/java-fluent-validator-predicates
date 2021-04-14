@@ -22,7 +22,7 @@ We use [GitHub](https://github.com/mvallim/java-fluent-validator-predicates) for
 ## Authors
 
 * **Marcos Vallim** - *Founder, Author, Development, Test, Documentation* - [mvallim](https://github.com/mvallim)
-* **Paulo Sergio** - *Manteiner, Development, Test, Documentation* - [pspjnsu](https://github.com/paulosergio-jnr)
+* **Paulo Sergio** - *Manteiner, Development, Test, Documentation* - [paulosergio-jnr](https://github.com/paulosergio-jnr)
 
 See also the list of [contributors](CONTRIBUTORS.txt) who participated in this project.
 
