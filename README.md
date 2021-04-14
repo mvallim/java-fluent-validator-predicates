@@ -17,12 +17,12 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 
 ## Versioning
 
-We use [GitHub](https://github.com/mvallim/java-fluent-validator) for versioning. For the versions available, see the [tags on this repository](https://github.com/mvallim/java-fluent-validator/tags).
+We use [GitHub](https://github.com/mvallim/java-fluent-validator-predicates) for versioning. For the versions available, see the [tags on this repository](https://github.com/mvallim/java-fluent-validator-predicates/tags).
 
 ## Authors
 
 * **Marcos Vallim** - *Founder, Author, Development, Test, Documentation* - [mvallim](https://github.com/mvallim)
-* **Paulo Sergio** - *Manteiner, Development, Test, Documentation* - [pspjnsu](https://github.com/pspjnsu)
+* **Paulo Sergio** - *Manteiner, Development, Test, Documentation* - [pspjnsu](https://github.com/paulosergio-jnr)
 
 See also the list of [contributors](CONTRIBUTORS.txt) who participated in this project.
 
