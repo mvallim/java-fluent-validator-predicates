@@ -9,7 +9,7 @@
 
 _**Compatible JDK 8, 11 and 15**_
 
-This library supports **`Kotlin`** aswell
+This library supports **`Kotlin`** as well
 
 ## Contributing
 
