@@ -1,4 +1,4 @@
-# 1. Object Predicates
+# 3. String Predicates
 Predicates located under `br.com.fluentvalidator.predicate.StringPredicate` class.
 
 + [isAlpha](#isAlpha)

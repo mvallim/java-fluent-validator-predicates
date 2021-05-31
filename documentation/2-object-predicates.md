@@ -1,4 +1,4 @@
-# 1. Object Predicates
+# 2. Object Predicates
 Predicates located under `br.com.fluentvalidator.predicate.ObjectPredicate` class.
 
 + [equalObject](#equalObject)
